@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/user_layout}">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE-edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>login</title>
+<script src="js/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<div layout:fragment="content" class="d-flex">
+		<div class="row justify-content-center align-self-center form-small">
+			<h2 class="text-center page-title">아이디 찾기 결과</h2>
+			<div th:if="${ #lists.isEmpty(findIdResultList) }">
+				<ul>
+					<li>존재하는 회원이 없습니다.<br>정보를 다시 확인하거나, 회원가입 해주세요.
+					</li>
+				</ul>
+
+				<hr class="my-4">
+				<button type="button" class="w-100 btn btn-lg btn-secondary mb-1"
+					th:onclick="|location.href='@{/member_findidform}'|">아이디 다시찾기</button>
+				<button type="button" class="w-100 btn btn-lg btn-primary"
+					th:onclick="|location.href='@{/member_modify}'|">회원가입하기</button>
+			</div>
+			<div th:if="${ not #lists.isEmpty(findIdResultList) }">
+				<ul th:each="result : ${findIdResultList}">
+					<li><div th:if=" ${ #lists.size(findIdResultList) > 1 }">
+							<span th:text="${result.nick}"></span> - </div>
+							아이디 : <span th:text="${result.id}"></span> <br> 가입일 : <span th:text="${result.joinDate}"></span></li>
+				</ul>
+				<hr class="my-4">
+				<button type="button" class="w-100 btn btn-lg btn-secondary mb-1"
+					th:onclick="|location.href='@{/member_findpwform}'|">비밀번호찾기</button>
+				<button type="button" class="w-100 btn btn-lg btn-primary"
+					th:onclick="|location.href='@{/member_loginform}'|">로그인하기</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
