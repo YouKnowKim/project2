@@ -2,10 +2,16 @@
 <!DOCTYPE configuration
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
 <configuration>
+
+<settings>
+	<setting name="callSettersOnNulls" value="true"/>
+	<setting name="returnInstanceForEmptyRow" value="true"/>
+</settings>
+
 <typeAliases>
-	<typeAlias type="com.example.vo.MemberVo" alias="MemberVo" />
-	<typeAlias type="com.example.vo.MemberStateVo" alias="MemberStateVo" />
-	<typeAlias type="com.example.vo.MemberAndMemberStateVo" alias="MemberAndMemberStateVo" />
+	<typeAlias type="com.example.vo.MemberVo" alias="memberVo" />
 </typeAliases>
+
 </configuration>

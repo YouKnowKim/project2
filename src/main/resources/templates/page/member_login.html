@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/user_layout}">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE-edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>login</title>
+	<script src="js/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<div layout:fragment="content" id="loginForm" class="d-flex">
+		<form th:action="@{/member_login}" method="post"
+			class="row justify-content-center align-self-center form-signin form-small">
+			<h2 class="text-center page-title">로그인</h2>
+
+			<div class="form-floating">
+				<input type="email" class="form-control" name="id" id="id"><label
+					for="id">이메일</label>
+			</div>
+
+			<div class="form-floating">
+				<input type="password" class="form-control" name="pwd" id="pwd"><label
+					for="pwd">비밀번호</label>
+
+				<div th:if="${not #strings.isEmpty(message)}">
+					<span style="color: red;" th:text="${message}"></span>
+				</div>
+
+			</div>
+			
+			<!-- <div class="checkbox mb-3">
+				<label> <input type="checkbox" value="remember-me">
+					Remember me
+				</label>
+			</div> -->
+
+			<div class="mb-3">
+				<a th:href="@{/member_findidform}">아이디 찾기</a> | <a th:href="@{/member_findpwform}">비밀번호 찾기</a>
+			</div>
+
+			<button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
+		</form>
+	</div>
+</body>
+</html>
