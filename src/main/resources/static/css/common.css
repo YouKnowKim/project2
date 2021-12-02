@@ -212,5 +212,25 @@ aside #side-title+ul {
 
 
 
+/* ############ 정보수정 ############ */
+#memberModifyForm div+div {
+    margin-top: 10px;
+}
 
+#memberModifyForm input[type=text] {
+    width: 100%;
+}
+.pw-condition li.off {
+    color: #fd4802;
+}
+
+.pw-condition li.on {
+    display: none;
+}
+
+#newpwd.off,
+#newpwdCheck.off {
+    border: 1px solid #fd4802 !important;
+    background: #fff6f2;
+}
 
