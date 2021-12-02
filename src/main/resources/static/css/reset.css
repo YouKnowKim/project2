@@ -48,22 +48,3 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
-
-
-/* ############ 정보수정 ############ */
-#memberModifyForm div+div {
-    margin-top: 10px;
-}
-.pw-condition li.off {
-    color: #fd4802;
-}
-
-.pw-condition li.on {
-    display: none;
-}
-
-#newpwd.off,
-#newpwdCheck.off {
-    border: 1px solid #fd4802 !important;
-    background: #fff6f2;
-}
