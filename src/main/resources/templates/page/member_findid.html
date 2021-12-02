@@ -1,62 +1,44 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/user_layout}">
-<div layout:fragment="content" class="d-flex">
-    <form class="row justify-content-center align-self-center form-small" id="findIdForm"
-        action="${pageContext.request.contextPath}/member_findId.do" method="post">
-        <h2 class="text-center page-title">아이디 찾기</h2>
-        <div class="mb-3">
-            <label for="name">이름</label> <input type="text" class="form-control" name="name" id="name">
-        </div>
-        <div class="mb-3">
-            <label for="birth">생년월일</label><input type="text" class="form-control" name="birth" id="birth">
-        </div>
-        <hr class="my-4">
-        <button class="w-100 btn btn-lg btn-primary" type="submit" id="submit">아이디찾기</button>
-    </form>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{layout/user_layout}">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE-edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>login</title>
+<script src="js/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<div layout:fragment="content" class="d-flex">
+		<div class="row justify-content-center align-self-center form-small">
+			<h2 class="text-center page-title">아이디 찾기 결과</h2>
+			<div th:if="${ #lists.isEmpty(findIdResultList) }">
+				<ul>
+					<li>존재하는 회원이 없습니다.<br>정보를 다시 확인하거나, 회원가입 해주세요.
+					</li>
+				</ul>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $("#findIdForm").submit(function () {
-                if ($.trim($("#name").val()) == "" || $.trim($("#birth").val()) == "") {
-                    alert("이름과 생년월일을 입력하십시오.");
-                    return false;
-                }
-
-                const dateStr = $.trim($("#birth").val());
-
-                var year = Number(dateStr.substr(0, 4));
-                var month = Number(dateStr.substr(4, 2));
-                var day = Number(dateStr.substr(6, 2));
-                var today = new Date(); // 날자 변수 선언
-                var yearNow = today.getFullYear();
-
-                if (year < 1900) {
-                    alert("년도가 올바르지 않습니다.");
-                    return false;
-                }
-
-                if (month < 1 || month > 12) {
-                    alert("달은 1월부터 12월까지 입력 가능합니다.");
-                    return false;
-                }
-                if (day < 1 || day > 31) {
-                    alert("일은 1일부터 31일까지 입력가능합니다.");
-                    return false;
-                }
-                if ((month == 4 || month == 6 || month == 9 || month == 11) && day == 31) {
-                    alert(month + "월은 31일이 존재하지 않습니다.");
-                    return false;
-                }
-                if (month == 2) {
-                    var isleap = (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
-                    if (day > 29 || (day == 29 && !isleap)) {
-                        alert(year + "년 2월은  " + day + "일이 없습니다.");
-                        return false;
-                    }
-                }
-                return true;
-            });
-        });
-    </script>
-</div>
+				<hr class="my-4">
+				<button type="button" class="w-100 btn btn-lg btn-secondary mb-1"
+					th:onclick="|location.href='@{/member_findidform}'|">아이디 다시찾기</button>
+				<button type="button" class="w-100 btn btn-lg btn-primary"
+					th:onclick="|location.href='@{/member_modify}'|">회원가입하기</button>
+			</div>
+			<div th:if="${ not #lists.isEmpty(findIdResultList) }">
+				<ul th:each="result : ${findIdResultList}">
+					<li><div th:if=" ${ #lists.size(findIdResultList) > 1 }">
+							<span th:text="${result.nick}"></span> - </div>
+							아이디 : <span th:text="${result.id}"></span> <br> 가입일 : <span th:text="${result.joinDate}"></span></li>
+				</ul>
+				<hr class="my-4">
+				<button type="button" class="w-100 btn btn-lg btn-secondary mb-1"
+					th:onclick="|location.href='@{/member_findpwform}'|">비밀번호찾기</button>
+				<button type="button" class="w-100 btn btn-lg btn-primary"
+					th:onclick="|location.href='@{/member_loginform}'|">로그인하기</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
