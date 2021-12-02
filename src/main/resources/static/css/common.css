@@ -1,0 +1,236 @@
+@charset "UTF-8";
+
+header {
+    border-bottom: 1px solid #eeeeee;
+}
+
+header .container {
+    position: relative;
+    padding: 20px 0;
+    height: 75px;
+}
+
+header #menu-box {
+    position: absolute;
+    left: 150px;
+}
+
+header #menu-box li {
+    float: left;
+    line-height: 40px;
+}
+
+header #menu-box li+li {
+    margin-left: 20px;
+}
+
+header a.logo {
+    position: absolute;
+    left: 0;
+}
+
+header #login-box {
+    position: absolute;
+    right: 0;
+}
+
+header #user-box {
+    position: absolute;
+    right: 200px;
+}
+
+header ul.notice-box {
+    float: left;
+}
+
+header ul.notice-box li {
+    float: left;
+}
+
+header ul.notice-box li+li {
+    margin-left: 20px;
+}
+
+header .private-box {
+    float: left;
+    margin-left: 20px;
+}
+
+
+
+header .user-alarm,
+header .user-note {
+    position: relative;
+}
+
+header .dropdown-toggle.user-alarm:after {
+    display: none;
+}
+
+header .notion {
+    position: absolute;
+    right: -2px;
+    top: 3px;
+    line-height: 13px;
+}
+
+header .ico {
+    width: 16px;
+    height: 16px;
+    background: red;
+    color: #fff;
+    font-size: 10px;
+    display: inline-block;
+    text-align: center;
+    border-radius: 15px;
+}
+
+footer {
+    clear: both;
+}
+
+footer .footer-inner {
+    height: 70px;
+    padding: 30px 40px 0px;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+footer .footer-left>li {
+    float: left;
+    display: inline-block;
+}
+
+footer .footer-left>li .icon {
+    margin: 0 10px;
+}
+
+footer .visit-count {
+    float: right;
+    width: 200px;
+}
+
+footer .visit-count li {
+    float: left;
+    display: inline-block;
+    width: 50%;
+    text-align: center;
+}
+
+
+footer .visit-count li p {
+    font-weight: 600;
+    margin-bottom: 7px;
+}
+
+img.logo {
+    width: 100px;
+}
+
+/* d-flex>row justify-content-center align-self-center */
+.form-small {
+    width: 100%;
+    max-width: 500px;
+    padding: 15px;
+    margin: auto;
+}
+
+.form-signin .checkbox {
+    font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+aside.bd-sidebar {
+    width: 18%;
+    float: left;
+    height: auto;
+    border: 1px solid #ff5e63;
+}
+
+
+aside #side-title {
+    width: 100%;
+    height: 70px;
+    text-align: center;
+    line-height: 70px;
+    font-size: 20px;
+    font-weight: 900;
+    background: #ff5e63;
+    color: #fff;
+}
+
+aside #side-title+ul {
+    margin-top: 25px;
+}
+
+
+.panel-heading {
+    color: #333333;
+    background-color: #f9f9f9;
+    border-color: #e0e0e0;
+    padding: 10px 15px;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+}
+
+.panel-footer {
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+
+
+.page-title {
+    margin-top: 70px;
+    font-family: "Noto Sans KR";
+    font-weight: 700;
+    font-size: 34px;
+    color: #000;
+    line-height: 1.5;
+    letter-spacing: -0.34px;
+}
+
+
+
+
+/* ############ 정보수정 ############ */
+#memberModifyForm div+div {
+    margin-top: 10px;
+}
+
+#memberModifyForm input[type=text] {
+    width: 100%;
+}
+.pw-condition li.off {
+    color: #fd4802;
+}
+
+.pw-condition li.on {
+    display: none;
+}
+
+#newpwd.off,
+#newpwdCheck.off {
+    border: 1px solid #fd4802 !important;
+    background: #fff6f2;
+}
+

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="MemberVo">
+
+	<resultMap type="memberVo" id="memberResultMap">
+		<result property="memNo" javaType="int" column="mb_no" jdbcType="INTEGER" />
+		<result property="id" javaType="string" column="mb_id" jdbcType="VARCHAR" />
+		<result property="pwd" javaType="string" column="mb_pwd" jdbcType="VARCHAR" />
+		<result property="name" javaType="string" column="mb_name" jdbcType="VARCHAR" />
+		<result property="nick" javaType="string" column="mb_nick" jdbcType="VARCHAR" />
+		<result property="gender" javaType="string" column="mb_gender" jdbcType="CHAR" />
+		<result property="hp" javaType="string" column="mb_hp" jdbcType="VARCHAR" />
+		<result property="birth" javaType="string" column="mb_birth" jdbcType="DATE" />
+		<result property="joinDate" javaType="string" column="mb_datetime" jdbcType="DATE" />
+		<result property="state" javaType="string" column="mb_state" jdbcType="CHAR" />
+		<result property="boardCount" javaType="int" column="mb_board" jdbcType="INTEGER" />
+		<result property="commentCount" javaType="int" column="mb_comment" jdbcType="INTEGER" />
+		<result property="visitCount" javaType="int" column="mb_visit" jdbcType="INTEGER" />
+		<result property="grade" javaType="int" column="mb_grade" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<parameterMap type="memberVo" id="MemberParamerterMap">
+		<parameter property="memNo" javaType="int" jdbcType="INTEGER" />
+		<parameter property="id" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="pwd" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="name" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="nick" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="gender" javaType="string" jdbcType="CHAR" />
+		<parameter property="hp" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="birth" javaType="string" jdbcType="DATE" />
+		<parameter property="joinDate" javaType="string" jdbcType="DATE" />
+		<parameter property="state" javaType="string" jdbcType="CHAR" />
+		<parameter property="boardCount" javaType="int" jdbcType="INTEGER" />
+		<parameter property="commentCount" javaType="int" jdbcType="INTEGER" />
+		<parameter property="visitCount" javaType="int" jdbcType="INTEGER" />
+		<parameter property="grade" javaType="int" jdbcType="INTEGER" />
+	</parameterMap>
+
+	<select id="Selectlogin" parameterMap="MemberParamerterMap" resultMap="memberResultMap">
+		(select NULL AS mb_no, NULL AS mb_id, NULL AS mb_nick, NULL AS mb_grade, NULL AS mb_state 
+		FROM member
+		WHERE NOT EXISTS( 
+		select mb_no, mb_id, mb_nick, mb_grade, mb_state 
+		from member 
+		where mb_id = #{id} and mb_pwd = #{pwd}))
+		UNION
+		(select mb_no, mb_id, mb_nick, mb_grade, mb_state 
+		from member 
+		where mb_id = #{id} and mb_pwd = #{pwd})
+	</select>
+	
+	<select id="SelectNBMemberList" parameterMap="MemberParamerterMap" resultMap="memberResultMap">
+		SELECT mb_id, mb_nick, mb_datetime
+		FROM member
+		WHERE mb_name = #{name} AND mb_birth = #{birth}
+	</select>
+	
+	<insert id="InsertMember" parameterMap="MemberParamerterMap">
+		INSERT INTO member (mb_id, mb_nick, mb_name, mb_pwd, mb_gender, mb_hp, mb_birth, mb_datetime) 
+		VALUES (#{id}, #{nick}, #{name}, #{pwd}, #{gender}, #{hp}, #{birth}, DATE_FORMAT(now(), '%Y/%m/%d %H:%i:%s'))
+	</insert>
+	
+	<select id="selectIdCheck" parameterMap="MemberParamerterMap" resultType="string">
+		select IFNULL(MAX(mb_id),NULL) AS mb_id from member 
+		where mb_id = #{id}
+	</select>
+	
+	<select id="selectNickCheck" parameterMap="MemberParamerterMap" resultType="string">
+		select IFNULL(MAX(mb_nick),NULL) AS mb_nick from member 
+		where mb_nick = #{nick}
+	</select>
+	
+	<update id="UpdatePwMember" parameterMap="MemberParamerterMap">
+		UPDATE member SET mb_pwd = #{pwd} 
+		WHERE mb_id = #{id}
+	</update>
+	
+	<select id="SelectWithDraw" parameterType="string" resultType="string">
+		SELECT IFNULL(MAX(mb_state),NULL) AS mb_state
+		FROM member
+		WHERE mb_id = #{id}
+	</select>
+</mapper>
