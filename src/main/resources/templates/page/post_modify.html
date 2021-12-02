@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko" , xmlns:th="https://www.thymeleaf.org/">
+<meta charset='UTF-8'>
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+	integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+	crossorigin="anonymous">
+<title>게시글 수정</title>
+<style>
+table {
+	width: 500px;
+	border-collapse: collapse;
+	margin: 50px auto;
+}
+
+table, tr, th, td {
+	border: 1px solid blue;
+}
+
+th, td {
+	height: 30px;
+	text-align: center;
+}
+</style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		
+		function OnChange()	{ 
+			var bordNoSelect = document.getElementById("bordNo").options[document.getElementById("bordNo").selectedIndex].value;
+			if(bordNoSelect == 1) {
+				$('#reviewLiSt').show();
+			} else {
+				$('#reviewLiSt').hide();
+			}
+		};
+		var loadFile = function(event) {
+			var image = document.getElementById('output');
+			image.src = URL.createObjectURL(event.target.files[1]);
+		};
+		
+		$(function() {
+		    // Multiple images preview in browser
+		    var imagesPreview = function(input, placeToInsertImagePreview) {
+		        if (input.files) {
+		            var filesAmount = input.files.length;
+		            for (i = 0; i < filesAmount; i++) {
+		                var reader = new FileReader();
+		                reader.onload = function(event) {
+		                    $($.parseHTML('<img>')).attr('src', event.target.result).attr('width', 100).attr('height', 100).appendTo(placeToInsertImagePreview);
+		                }
+		                reader.readAsDataURL(input.files[i]);
+		            }
+		        }
+		    };
+		    $('#gallery-photo-add').on('change', function() {
+		        imagesPreview(this, 'div.photogallery');
+		    });
+		});
+		
+		$(function() {
+		    // Multiple images preview in browser
+		    var videoPreview = function(input, placeToInsertImagePreview) {
+		        if (input.files) {
+		            var filesAmount = input.files.length;
+		            for (i = 0; i < filesAmount; i++) {
+		                var reader = new FileReader();
+		                reader.onload = function(event) {
+		                    $($.parseHTML('<video>')).attr('src', event.target.result).attr('width', 100).attr('height', 100).attr('preload','metadata').appendTo(placeToInsertImagePreview);
+		                }
+		                reader.readAsDataURL(input.files[i]);
+		            }
+		        }
+		    };
+		    $('#gallery-video-add').on('change', function() {
+		    	videoPreview(this, 'div.videogallery');
+		    });
+		});
+	</script>
+
+<body>
+	<article>
+		<div class="container" role="main">
+			<h2>게시글 수정 폼</h2>
+			<form th:action="@{/modifyPost}" method="POST" enctype="multipart/form-data">
+				<div class="mb-3">
+					<label for="subject">제목</label> 
+					<input type="text" 	class="form-control" name="subject" id="subject" value="${session.post.subject}">
+				</div>
+				<div class="mb-3">
+					<label for="bordNo">게시판 선택</label> 
+					<select name="bordNo" id="bordNo" onchange="OnChange();">
+						<div th:each="board : ${boardList}">
+							<span th:if="${board.key}==${session.post.boardNo}">
+								<option value="${board.key}" selected="${session.post.boardNo}"><span th:text="${board.value}"></span></option>
+							</span>
+							<span th:unless="${board.key}=={session.post.boardNo}">
+								<option value="${board.key}"><span th:text="${board.value}"></span></option>
+							</span>
+						</div>
+					</select>
+				</div>
+				 <!-- <div class="mb-3">
+					<label for="photo">사진</label> 					
+					<input type="file" accept="image/*" class="form-control" name="photo" id="photo" onchange="loadFile(event)" multiple style="font-size: 13px;">
+					<p><img id="output" width="200" /></p>
+				</div> -->
+				
+				<div class="mb-3">
+					<label for="photo">사진</label> 		
+					<input type="file" accept="image/*" class="form-control" name="gallery-photo-add" id="gallery-photo-add" multiple style="font-size: 13px;">
+					<div class="photogallery"></div>
+				</div>
+				
+				<!-- <div class="mb-3">
+					<label for="video">동영상</label>
+					<input type="file" class="form-control" name="video" id="video" multiple style="font-size: 13px;">
+				</div> -->
+				
+				<div class="mb-3">
+					<label for="video">동영상</label>
+					<input type="file" accept="video/*" class="form-control" name="gallery-video-add" id="gallery-video-add" multiple style="font-size: 13px;">
+					<div class="videogallery"></div>
+				</div>
+				<div class="mb-3">
+					<label for="attach">첨부 파일</label> <input type="file" class="form-control" name="attach" id="attach" multiple style="font-size: 13px;">
+				</div>
+				
+				<div id="reviewLiSt" style="display:none;">
+					
+				<div class="mb-3">
+					<label for="room">숙소 선택</label> 
+					<select name="room">
+						<div th:each="i : ${#numbers.sequence(1,10)}">
+							<span th:if="${i}==${session.post.review.roomNo}">
+								<option value="${i}" selected="${session.post.review.roomNo}"><span th:text="${i}"></span></option>
+							</span>
+							<span th:unless="${i}==${session.post.review.roomNo}">
+								<option value="${i}" ><span th:text="${i}"></span></option>
+							</span>
+						</div>
+					</select>
+				</div>
+				<div class="mb-3">
+					별점등록<br>
+					<label for="rate_loc">위치</label> 
+					<select name="rate_loc">
+						<div th:each="i : ${#numbers.sequence(1,5)}">
+							<span th:if="${i}==${session.post.review.rate_loc}">
+								<option value="${i}" selected="${session.post.review.rate_loc}"><span th:text="${i}"></span></option>
+							</span>
+							<span th:unless="${i}==${session.post.review.rate_loc}">
+								<option value="${i}" ><span th:text="${i}"></span></option>
+							</span>
+						</div>
+					</select>
+					<label for="rate_clean">위생</label> 
+					<select name="rate_clean">
+						<div th:each="i : ${#numbers.sequence(1,5)}">
+							<span th:if="${i}==${session.post.review.rate_clean}">
+								<option value="${i}" selected="${session.post.review.rate_clean}"><span th:text="${i}"></span></option>
+							</span>
+							<span th:unless="${i}==${session.post.review.rate_clean}">
+								<option value="${i}" ><span th:text="${i}"></span></option>
+							</span>
+						</div>
+					</select>
+					<label for="rate_comu">의사소통</label> 
+					<select name="rate_comu">
+						<div th:each="i : ${#numbers.sequence(1,5)}">
+							<span th:if="${i}==${session.post.review.rate_comu}">
+								<option value="${i}" selected="${session.post.review.rate_comu}"><span th:text="${i}"></span></option>
+							</span>
+							<span th:unless="${i}==${session.post.review.rate_comu}">
+								<option value="${i}" ><span th:text="${i}"></span></option>
+							</span>
+						</div>
+					</select>
+					<label for="rate_chip">가성비</label> 
+					<select name="rate_chip">
+						<div th:each="i : ${#numbers.sequence(1,5)}">
+							<span th:if="${i}==${session.post.review.rate_chip}">
+								<option value="${i}" selected="${session.post.review.rate_chip}"><span th:text="${i}"></span></option>
+							</span>
+							<span th:unless="${i}==${session.post.review.rate_chip}">
+								<option value="${i}" ><span th:text="${i}"></span></option>
+							</span>
+						</div>
+					</select>
+				</div>
+				<div class="mb-3">					
+					<label for="visitDate">방문 날짜를 선택하세요</label> 
+					<input type="date" name="visitDate" id = "visitDate" value="${session.post.review.visitDate}" />
+				</div>				
+				<div class="mb-3">					
+					<label for="re_push_pl">주변 맛집과 관광지를 추천해주세요</label> 
+					<input type="text" class="form-control" name="re_push_pl" id="re_push_pl" value="${session.post.review.recommendPlace}">
+				</div>
+				<div class="mb-3">					
+					<label for="re_push_npl">이런분들께는 비추에요</label> 
+					<input type="text" class="form-control" name="re_push_npl" id="re_push_npl" value="${session.post.review.notRecommendPerson}">
+				</div>
+				</div>
+				<div class="mb-3">
+					<label for="content">내용</label>
+					<textarea class="form-control" rows="5" name="content" id="content" th:text="${session.post.content}"></textarea>
+				</div>
+				<div class="mb-3">
+					<label for="tag">태그</label> <input type="text" class="form-control" name="tag" id="tag" value="${session.post.tag}">
+				</div>
+				<div>
+	                 <button type="submit" class="btn btn-sm btn-primary" id="modifyBtn"  style="font-size: 12px;">수정</button>
+	            </div>       
+			</form>
+			
+			<a th:href="@{/detailPost(no=${session.post.no}, writerName=${session.post.writerName})}">상세보기로 돌아가기</a>
+		</div>
+	</article>
+	
+	<div th:if="${session.post.attachList!=null}">
+		<table id="tbl">
+			<tr>
+				<th>파일명</th>
+				<th>파일크기</th>
+				<th>비고</th>
+			</tr>
+			<span th:each="file : ${session.post.attachList}">
+				<tr>
+					<td><span th:text="${file.originalFileName}"></span></td>
+					<td><span th:text="${file.fileSize}"></span>bytes</td>
+					<td><a th:href="@{/cancelPostAttach(attachNo=${file.no})}">삭제</a></td>
+				</tr>
+			</span>
+		</table>
+	</div>
+
+
+</body>
+</html>

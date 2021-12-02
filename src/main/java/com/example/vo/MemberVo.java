@@ -1,14 +1,14 @@
 package com.example.vo;
 
+import groovy.transform.builder.Builder;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class MemberVo extends CommonVo {
 	private int memNo;
 	private String id;
@@ -24,7 +24,7 @@ public class MemberVo extends CommonVo {
 	private int commentCount;
 	private int visitCount;
 	private int grade;
-
+	
 	public MemberVo(int memNo, String state) {
 		super();
 		this.memNo = memNo;

@@ -1,0 +1,33 @@
+<div class="todo-content">
+	<table class="table table-bordered table-striped table-condensed flip-content">
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>게시글 목록</th>
+				<th>작성날짜</th>
+				<th>작성자</th>
+				<th>조회수</th>
+			</tr>
+		</thead>
+		<tbody>
+			<span th:if="${posts==null}">
+				<tr>
+					<td colspan="4">등록된 게시글이 없습니다.</td>
+				</tr>
+			</span>
+			<span th:if="${posts!=null}">
+				<span th:each="post : ${posts}">
+					<tr>
+						<td th:text="${post.no}"></td>
+						<td><a th:href="@{/detailPost(no=${post.no}, writerName=${post.writerName})}"><span th:text="${post.subject}"></span></a></td>
+						<td><span th:text="${post.createDate}"></span><td>
+						<td><span th:text="${post.writerName}"></span></td>
+						<td><span th:text="${post.views}"></span></td>
+					</tr>
+				</span>
+			</span>
+		</tbody>
+	</table>
+	<div id="writePost" style="text-align: right;">
+		<a th:href="@{/post_write}"><button type="button" class="btn btn-primary">글작성</button></a>
+	</div>

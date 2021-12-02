@@ -1,0 +1,329 @@
+<%-- detailPost.jsp --%>
+<%@ page import="util.*"%>
+<%@ page contentType="text/html; charset=utf-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+
+<%
+	pageContext.setAttribute("CR", "\n");
+	pageContext.setAttribute("BR", "<br>");
+%>
+<div class="col-lg-12">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<span class="pull-right">작성자 : <span th:text="${post.writerName}"></span> / 작성시간 :
+			<span th:text="${post.createDate}"></span></span>
+			제목 : <span th:text="${post.subject}"></span> </div>
+		<div class="panel-body">
+			<table border="1">
+				<span th:if="${post.boardNo == 1}">
+					<tr>
+						<td colspan="2">숙소번호</td>
+						<td colspan="2" th:text="${post.review.roomNo}"></td>
+						<td colspan="2">숙소방문일자</td>
+						<td colspan="2" th:text="${post.review.visitDate}"></td>
+					<tr>
+					<tr>
+						<td>위치평점</td>
+						<td th:text="${post.review.rate_loc}"></td>
+						<td>위생평점</td>
+						<td th:text="${post.review.rate_clean}"></td>
+						<td>의사소통평점</td>
+						<td th:text="${post.review.rate_comu}"></td>
+						<td>가성비평점</td>
+						<td th:text="${post.review.rate_chip}"></td>
+					<tr>
+					<tr>
+						<td colspan="2">추천 음식점, 장소</td>
+						<td colspan="2" th:text="${post.review.recommendPlace}"></td>
+						<td colspan="2">이런분들께는 비추!</td>
+						<td colspan="2" th:text="${post.review.notRecommendPerson}"></td>
+					<tr>
+				</span>
+				<span th:if="${post.boardNo == 1}">
+					<tr>
+						<td colspan="2">숙소번호</td>
+						<td colspan="2">${post.review.roomNo}</td>
+						<td colspan="2">숙소방문일자</td>
+						<td colspan="2">${post.review.visitDate}</td>
+
+					<tr>
+					<tr>
+						<td>위치평점</td>
+						<td>${post.review.rate_loc}</td>
+						<td>위생평점</td>
+						<td>${post.review.rate_clean}</td>
+						<td>의사소통평점</td>
+						<td>${post.review.rate_comu}</td>
+						<td>가성비평점</td>
+						<td>${post.review.rate_chip}</td>
+					<tr>
+					<tr>
+						<td colspan="2">추천 음식점, 장소</td>
+						<td colspan="2">${post.review.recommendPlace}</td>
+						<td colspan="2">이런분들께는 비추!</td>
+						<td colspan="2">${post.review.notRecommendPerson}</td>
+
+					<tr>
+				</span>
+		
+				<tr>
+					<td colspan="2">내용</td>
+					<td colspan="6" th:text="${#strings.replace(post.content,'\n','<br>')}"></td>
+				<tr>
+				<tr>
+					<td colspan="2">태그</td>
+					<td colspan="6" th:text="${post.tag}"></td>
+				<tr>
+			</table>
+			<div class="mb-3 panel-heading">
+				<a href="@{/modifyPostForm(no=${post.no})}" class="btn btn-secondary">수정</a>&nbsp;&nbsp;
+	
+				<a th:href="@{/modifyPostBoardNo(no=${post.no})}" class="btn btn-secondary">이동</a>&nbsp;&nbsp;
+	
+				<a th:href="@{/cancelPost(no=${post.no})}" class="btn btn-danger">삭제</a>&nbsp;&nbsp;
+	
+				<a th:href="@{/reportPost(no=${post.no})}" class="btn btn-warning">신고</a>&nbsp;&nbsp;
+	
+			<a th:href="@{/listPost(boardNo=${post.boardNo})}" class="btn btn-secondary">목록보기</a>&nbsp;&nbsp;
+			 </div>
+	
+					  <span th:if="{attachList != null}">
+						<div id="attachView">
+						  <span th:each="file : ${post.attachList}">
+							<span th:text="token=${#strings.toLowerCase(${file.systemFileName})}"/>
+							<span th:text="${#strings.listSplit(${file.systemFileName}, ',')}"
+							  <span th:if="${status.last}">
+	
+								<div th:block th:switch="${token eq 'png' ||token eq 'jpg' ||token eq 'jpeg' }">
+						<img src="${pageContext.contextPath}/upload/${file.systemFileName}"
+						  height=200 width=200/>
+								  <img src="${pageContext.contextPath}/upload/${file.systemFileName}"
+									height=200 width=200/>
+								</div>
+								  <div th:switch="${token eq 'mp4'|| token eq 'wmv'|| token eq 'mov'|| token eq 'avi' }">
+									<video src="${pageContext.contextPath}/upload/${file.systemFileName}"
+									  height=300 width=300 controls/>
+									</div>
+								  </span>
+								  </span>
+								</div>
+								<table id="tbl">
+									<tr>
+									  <th>파일명</th>
+									  <th>파일크기</th>
+									<tr>
+									  <div th:each="file : ${post.attachList}">
+										<a th:href="@{/fileDownload(originalFileName=${file.originalFileName},
+										  systemFileName=${file.systemFileName})}"/>
+										  <tr>
+												  <td><a th:href="@{/downloadUrl}">${file.originalFileName}</a></td>
+												  <td><span th:text="${file.fileSize}"/> bytes</td>
+											   <tr>
+									  </div>
+								  </table>
+								  <div class="panel-footer">
+									   <div class="card">
+										<div class="card-header">
+										  <%-- 댓글 달기 --%>
+										  <div id="addComment">
+											<div class="input-group" style="margin-top:10px">
+												<input type="text" name="addCmtContent" th:value="${addCmtContent}"
+												   th:placeholder="댓글을 입력해 주세요" th:autocomplete="off"/>
+												   <span class="input-group-btn">
+												<span class="input-group-btn">
+														  <button class="btn btn-default" type="button" th:id="addCmtBtn">댓글 달기</button>
+													   </span>
+													</div>
+												 </div>
+											   <%-- 댓글 수정--%>
+											  <div id="modifyComment" style="display:none;">
+													  <div class="input-group" style="margin-top:10px">
+												  <input type="hidden" th:id="no" />
+	
+													<input type="text" class="form-control" th:id="modifyCmtContent"
+													  th:placeholder="댓글을 입력해 주세요" th:autocomplete="off">
+													  <span class="input-group-btn">
+														<button class="btn btn-default" type="button" th:id="cancel">취소</button>
+																<button class="btn btn-default" type="button" th:id="modifyBtn">댓글 달기</button>
+														<ul class="list-group list-group-flush" th:id="ListComment">
+														  <div>
+															<div th:each="comment : ${commentList}">
+															  <tbody>
+																<tr>
+																  <td>${comment.userName}</td>
+																  <td>${comment.writeday}</td>
+																</tr>
+																<tr>
+																  <td colspan="2" class="cmtContent">${comment.content}</td>
+																</tr>
+																<tr>
+																  <td colspan="2">
+																	<button class="modifyFormBtn btn btn-secondary btn-sm" type="button" >수정</button>
+																	<button class="removeBtn btn btn-danger btn-sm" type="button">삭제</button>
+																  </td>
+																</tr>
+															  </tbody>
+														  </div>
+														</div>
+			<script>
+				$(document).ready(function () {
+
+					const getAjax = function (url, boardNo, cmtContent) {
+						// resolve, reject는 자바스크립트에서 지원하는 콜백 함수이다.
+						return new Promise((resolve, reject) => {
+							$.ajax({
+								url: url,
+								method: 'GET',
+								dataType: 'json',
+								data: {
+									boardNo: boardNo,
+									cmtContent: cmtContent.trim().replace(/\n/g, '<br/>')
+								},
+								success: function (data) {
+									resolve(data);
+								},
+								error: function (e) {
+									reject(e);
+								}
+							});
+						});
+					}
+					const updateComment = function (url, boardNo, cmtContent, no) {
+						return new Promise((resolve, reject) => {
+							$.ajax({
+								url: url,
+								method: 'GET',
+								dataType: 'json',
+								data: {
+									boardNo: boardNo,
+									cmtContent: cmtContent.trim().replace(/\n/g, '<br/>'),
+									no: no
+								},
+								success: function (data) {
+									resolve(data);
+									$('#modifyComment').insertAfter('#addComment');
+									$('#modifyComment').hide();
+								},
+								error: function (e) {
+									reject(e);
+								}
+							});
+						});
+					}
+					const removeComment = function (url, boardNo, no) {
+						return new Promise((resolve, reject) => {
+							$.ajax({
+								url: url,
+								method: 'GET',
+								dataType: 'json',
+								data: {
+									boardNo: boardNo,
+									no: no
+								},
+								success: function (data) {
+									resolve(data);
+								},
+								error: function (e) {
+									reject(e);
+								}
+							});
+						});
+					}
+
+					async function requestProcess(url, boardNo, cmtContent, no) {
+						try {
+							let cmtList = null;
+							if (cmtContent == null) {
+								cmtList = await removeComment(url, boardNo, no);
+
+							} else {
+								if (no != null) {
+									cmtList = await updateComment(url, boardNo, cmtContent, no);
+								} else {
+									cmtList = await getAjax(url, boardNo, cmtContent);
+								}
+							}
+							$('#ListComment').html("");
+							let htmlStr = [];
+							for (let i = 0; i < cmtList.length; i++) {
+								htmlStr.push('<table id=' + cmtList[i].no + '>');
+								htmlStr.push('<tbody>');
+								htmlStr.push('<tr>');
+								htmlStr.push('<td>' + cmtList[i].userName + '</td>');
+								htmlStr.push('<td>' + cmtList[i].writeday + '</td>');
+								htmlStr.push('</tr>');
+								htmlStr.push('<tr>');
+								htmlStr.push('<td colspan="2" class="cmtContent">' + cmtList[i].content + '</td>');
+								htmlStr.push('</tr>');
+								htmlStr.push('<tr>');
+								htmlStr.push('<td colspan="2">');
+								htmlStr.push('<button class="modifyFormBtn" type="button">수정</button>');
+								htmlStr.push('<button class="removeBtn" type="button">삭제</button>');
+								htmlStr.push('</td>');
+								htmlStr.push('</tr>');
+								htmlStr.push('</tbody>');
+								htmlStr.push('</table>');
+							}
+
+							$('#ListComment').html(htmlStr.join(""));
+						} catch (error) {
+							console.log("error : ", error);
+						}
+					}
+
+					//댓글 달기
+					$('#addCmtBtn').on('click', function () {
+						const boardNo = '${param.no}';
+						const cmtContent = $('#addCmtContent').val().trim();
+						document.getElementById("addCmtContent").value = '';
+
+						requestProcess('${pageContext.request.contextPath}/addComment.do', boardNo, cmtContent);
+					});
+
+
+					$('#ListComment').on('click', '.modifyFormBtn', function () {
+						const no = $(this).parents('table').attr('id');
+
+						$('#modifyComment').insertAfter('#' + no);
+						const content = $(this).parents('tbody').find('.cmtContent').html().replace(/<br>/g, '\n');
+						console.log(content);
+						$('#modifyCmtContent').val(content);
+						$('#no').val(no);
+						$('#modifyComment').show();
+						$('#' + no).hide();
+
+					});
+
+
+					//댓글 삭제
+					$('#ListComment').on('click', '.removeBtn', function () {
+						const boardNo = '${param.no}';
+						const no = $(this).parents('table').attr('id');
+						const cmtContent = null;
+						requestProcess('${pageContext.request.contextPath}/removeComment.do', boardNo, cmtContent,
+							no);
+					});
+
+
+					//댓글 취소
+					$('#cancel').on('click', function () {
+						const no = $('#no').val();
+						$('#' + no).show();
+						$('#modifyComment').hide();
+						$('#modifyComment').insertAfter('#addComment');
+					});
+
+					//댓글 수정
+					$('#modifyBtn').on('click', function () {
+						const boardNo = '${param.no}';
+						const no = $('#no').val();
+						const cmtContent = $('#modifyCmtContent').val();
+						requestProcess('${pageContext.request.contextPath}/modifyComment.do', boardNo, cmtContent,
+							no);
+					});
+				});
+			</script>
+		</div>
+	</div>
+</div>

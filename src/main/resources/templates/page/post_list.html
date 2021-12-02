@@ -1,0 +1,63 @@
+
+<div class="todo-content">
+	<table class="table table-bordered table-striped table-condensed flip-content">
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>게시글 목록</th>
+				<th>작성날짜</th>
+				<th>작성자</th>
+				<th>조회수</th>
+			</tr>
+		</thead>
+		<tbody>
+			<span th:if="${posts==null}">
+				<tr>
+					<td colspan="4">등록된 게시글이 없습니다.</td>
+				</tr>
+			</span>
+			<span th:if="${posts!=null}">
+				<span th:each="post : ${posts}">
+					<tr>
+						<td><span th:text="${totalPostCount - (currentPage - 1) * postSize - postStat.index}"></span></td>
+						<td><a th:href="@{/detailPost(no=${post.no}, writerName=${post.writerName})}"><span th:text="${post.subject}"></span></a></td>
+						<td><span th:text="${post.createDate}"></span><td>
+						<td><span th:text="${post.writerName}"></span></td>
+						<td><span th:text="${post.views}"></span></td>
+					</tr>
+				</span>
+			</span>
+		</tbody>
+	</table>
+
+	<%-- 페이징 처리 --%>
+	<div id="paging" style="
+    text-align: center;
+">
+
+		
+		<span th:if="${stargPage > pageBlock}">
+			<a th:href="@{/listPost(currentPage=${startPage - pageBlock}, boardNo=${boardNo})}">[Prev]</a>
+		</span>
+		
+		<th:block th:with="start = ${startPage}, end = ${endPage}">
+		<span th:each="i : ${#numbers.sequence(start,end)}">
+			<span th:if="${i == currentPage}">
+				&nbsp;<span th:text="${i}"></span>&nbsp;
+			</span>
+			<span th:if="${i != currentPage}">
+				<a th:href="@{/listPost(currentPage=${i}, boardNo=${boardNo})}">&nbsp;<span th:text="${i}"></span>&nbsp;</a>
+			</span>
+		</span>
+		</th:block>
+		
+		<span th:if="${endPage < totalPage}">
+			<a th:href="@{/listPost(currentPage=${endPage + 1}, boardNo=${boardNo})}">[Next]</a>
+		</span>
+	</div>
+
+	<div id="writePost" style="text-align: right;">
+		<button type="button" class="btn btn-primary"
+		onclick="location.href='@{/writePostForm(boardNo=${boardNo})}'">글작성</button>
+	</div>
+</div>

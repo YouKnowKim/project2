@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="CommentDao">
+	<delete id="deleteComment" parameterType="int">
+		DELETE FROM comment WHERE co_no = #{comNo}
+	</delete>
+	
+	<parameterMap type="CommentVo" id="CommentParameterMap">
+		<parameter property="comNo" javaType="int" jdbcType="INTEGER" />
+		<parameter property="content" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="writeday" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="memNo" javaType="int" jdbcType="INTEGER" />
+		<parameter property="memName" javaType="string" jdbcType="VARCHAR" />
+	</parameterMap>
+	
+	<update id="updateComment" parameterType="CommentVo" parameterMap="CommentParameterMap">
+		UPDATE comment SET co_content = #{content} WHERE co_no = #{comNo}
+	</update>
+	
+	<resultMap type="CommentVo" id="CommentResultMap">
+		<result property="comNo" javaType="int" column="co_no" jdbcType="INTEGER" />
+		<result property="postNo" javaType="int" column="post_no" jdbcType="INTEGER" />
+		<result property="memNo" javaType="int" column="co_mb_no" jdbcType="INTEGER" />
+		<result property="content" javaType="string" column="co_content" jdbcType="VARCHAR" />
+		<result property="writeday" javaType="string" column="co_datetime" jdbcType="DATE" />
+		<result property="memName" javaType="string" column="mb_name" jdbcType="VARCHAR" />
+		
+	</resultMap>
+	<select id="selectCommentList" parameterType="int" resultMap="CommentResultMap">
+		SELECT comment.co_no, post_no, co_mb_no, co_content,
+		DATE_FORMAT(co_datetime, '%Y/%m/%d') as co_datetime, mb_name 
+		FROM comment LEFT JOIN member ON comment.co_mb_no = member.mb_no 
+		WHERE post_no = #{comNo} ORDER BY co_datetime DESC
+	</select>
+	
+	<insert id="insertComment" parameterType="CommentVo" parameterMap="CommentParameterMap">
+		INSERT INTO comment (post_no, co_mb_no, co_content, co_datetime) 
+		VALUES (#{postNo}, #{memNo}, #{content}, now()) 
+	</insert>
+</mapper>
+
+
+
+
+
+
+

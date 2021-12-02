@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="PostDao">
+	<parameterMap type="PostVo" id="PostVoParameterMap">
+		<parameter property="boardNo" javaType="int" jdbcType="INTEGER" />
+		<parameter property="subject" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="content" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="writerNo" javaType="int" jdbcType="INTEGER" />
+		<parameter property="tag" javaType="string" jdbcType="VARCHAR" />
+	</parameterMap>
+	
+	<insert id="insertPost" parameterMap="PostVoParameterMap">
+		INSERT INTO post (bo_no, po_mb_no, po_subject, po_content, po_tag, po_datetime, po_views, po_comment)
+		VALUES (#{boardNo}, #{writerNo}, #{subject}, #{content}, #{tag} , NOW(), 0, 0 )
+	</insert>
+	<select id="selectLastInsertID" resultType="int">
+		SELECT LAST_INSERT_ID();
+	</select>
+	
+	<resultMap type="PostVo" id="PostVoResultMap">
+		<result property="no" javaType="int" column="post_no" jdbcType="INTEGER" />
+		<result property="subject" javaType="String" column="po_subject" jdbcType="INTEGER" />
+		<result property="writerNo" javaType="int" column="po_mb_no" jdbcType="INTEGER" />
+		<result property="createDate" javaType="String" column="writedate" jdbcType="DATE" />
+		<result property="views" javaType="int" column="po_views" jdbcType="INTEGER" />
+		<result property="writerName" javaType="string" column="mb_name" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selectAllPosts" parameterType="int" resultMap="PostVoResultMap">
+		SELECT post_no, po_mb_no, po_subject,
+		DATE_FORMAT(po_datetime, '%Y/%m/%d %H:%i:%s') as writedate, po_views,mb_name
+		FROM post JOIN member ON post.po_mb_no=member.mb_no 
+		WHERE bo_no = #{boardNo}	
+		ORDER BY writedate DESC
+	</select>
+	
+	<parameterMap type="PostVo" id="PostVoUpdateParameterMap">
+		<parameter property="boardNo" javaType="int" jdbcType="INTEGER" />
+		<parameter property="subject" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="content" javaType="string" jdbcType="VARCHAR" />
+		<parameter property="no" javaType="int" jdbcType="INTEGER" />
+		<parameter property="tag" javaType="string" jdbcType="VARCHAR" />
+	</parameterMap>
+	
+	<update id="updatePost" parameterMap="PostVoUpdateParameterMap">
+		UPDATE post SET bo_no = #{boardNo}, po_subject = #{subject},
+		 po_content = #{content},  po_tag = #{tag}
+		WHERE post_no = #{no}
+	</update>
+	
+	<delete id="deletePost" parameterType="int">
+		DELETE FROM post WHERE post_no = #{postNo}
+	</delete>
+	
+	<resultMap type="PostVo" id="selectPostMap">
+		
+	</resultMap>
+	
+	<select id="selectPost" parameterType="int" resultMap="selectPostMap">
+		SELECT p.post_no, p.po_subject, p.po_content, p.po_mb_no, p.po_tag, p.po_views, 
+		date_format(p.po_datetime, '%Y/%m/%d %h:%i:%s') as writedate, p.bo_no ,
+		a.atta_realname, a.atta_sysname, a.atta_size, a.atta_no, m.mb_name, 
+		roo_no, re_rate_loc, re_rate_clean, re_rate_comu, re_rate_chip, re_vsdate, re_push_pl, re_push_npl 
+		FROM post as p LEFT JOIN attach as a ON p.post_no = a.post_no  
+		INNER JOIN member AS m ON m.mb_no = p.po_mb_no 
+		LEFT JOIN review AS r ON p.post_no = r.post_no  
+		WHERE p.post_no = #{no}
+	</select>
+	
+</mapper>

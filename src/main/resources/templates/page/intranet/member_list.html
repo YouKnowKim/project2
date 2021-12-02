@@ -1,14 +1,8 @@
-<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/admin_layout}">
-
-
 <div layout:fragment="page-title">회원 목록</div>
 <div layout:fragment="content">
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">회원 목록</h6>
-        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -68,11 +62,11 @@
                             (으)로 <button class="btn btn-primary" id="updateGradeBtn">변경</button></div>
 
                         <div class="col-sm-12 col-md-4">
-                            <button class="btn btn-primary" id="memberBlockBtn">강제 탈퇴</button>
-                            <button class="btn btn-primary" id="memberMailBtn">메일</button>
-                            <button class="btn btn-primary" id="memberNoteBtn">쪽지</button>
+                            <button class="btn btn-danger" id="memberBlockBtn">강제 탈퇴</button>
+                            <button class="btn btn-info" id="memberMailBtn">메일</button>
+                            <button class="btn btn-warning" id="memberNoteBtn">쪽지</button>
                         </div>
-                        <div class="col-sm-12 col-md-4">
+                        <div class="col-sm-12 col-md-4  text-right">
                             <!-- <select class="custom-select-sm form-control-sm" onchange="searchGo();" name="selectGrade"
                                 id="selectGrade">
                                 <option value="10">전체회원</option>

@@ -5,9 +5,6 @@
 <div layout:fragment="page-title">강제 탈퇴 회원</div>
 <div layout:fragment="content">
     <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">강제 탈퇴 회원</h6>
-        </div>
         <div class="card-body">
             <div class="table-responsive">
                 <div id="dataTable_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -59,7 +56,7 @@
                         <div class="col-sm-12 col-md-6">선택한 회원을
                             (으)로 <button class="btn btn-primary" id="blockCancelBtn">가입불가 해제</button></div>
 
-                        <div class="col-sm-12 col-md-6">
+                        <div class="col-sm-12 col-md-6 text-right">
                             <label>Show
                                 <select class="custom-select-sm form-control-sm" onchange="searchGo();"
                                     name="recordsPerPage" id="recordsPerPage">

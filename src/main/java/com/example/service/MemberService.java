@@ -2,26 +2,53 @@ package com.example.service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.dao.member.MemberDao;
-import com.example.paging.Criteria;
 import com.example.paging.PaginationInfo;
-import com.example.vo.MemberAndMemberStateVo;
-import com.example.vo.MemberStateVo;
 import com.example.vo.MemberVo;
 
-@Service("memberService")
+@Service("cityService")
 public class MemberService {
-
 	@Autowired
 	private MemberDao memberDao;
 
-	// 회원 등록
-	public void registerMember(MemberVo member) {
-		this.memberDao.insertMember(member);
+	// 로그인
+	public MemberVo loginMember(Map map) {
+		return this.memberDao.Selectlogin(map);
+	}
+
+	// 탈퇴회원 조회
+	public String checkWithDraw(String id) {
+		return this.memberDao.SelectWithDraw(id);
+	}
+
+	// 아이디 찾기
+	public List<MemberVo> retrieveMemberId(Map map) {
+		return this.memberDao.selectNBMemberList(map);
+	}
+
+	// 비밀번호 변경
+	public void modifyPw(Map map) {
+		this.memberDao.UpdatePwMember(map);
+	}
+
+	// 회원가입
+	public void registerMember(Map map) {
+		this.memberDao.insertMember(map);
+	}
+
+	// 아이디 중복체크
+	public String retrieveIdCheck(String id) {
+		return this.memberDao.selectIdCheck(id);
+	}
+
+	// 닉네임 중복체크
+	public String retrieveNickCheck(String nick) {
+		return this.memberDao.selectNickCheck(nick);
 	}
 
 	// 회원 수정
@@ -33,7 +60,7 @@ public class MemberService {
 	public void reviseMemberState(int memNo, String state) {
 		this.memberDao.updateMemberState(memNo, state);
 	}
-	
+
 	// 회원 등급 변경
 	public void reviseMemberGrade(int memNo, int grade) {
 		this.memberDao.updateMemberGrade(memNo, grade);
@@ -52,7 +79,7 @@ public class MemberService {
 		PaginationInfo paginationInfo = new PaginationInfo(params);
 		paginationInfo.setTotalRecordCount(memberTotalCount);
 
-		params.setPaginationInfo(paginationInfo);
+		params.setPaginationInfo (paginationInfo);
 
 		if (memberTotalCount > 0) {
 			memberList = this.memberDao.selectMemberList(params);
@@ -65,6 +92,4 @@ public class MemberService {
 	public int retrieveMemberTotalCount(MemberVo params) {
 		return this.memberDao.selectMemberTotalCount(params);
 	}
-	
-	
 }
