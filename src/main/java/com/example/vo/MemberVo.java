@@ -1,15 +1,13 @@
 package com.example.vo;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class MemberVo extends CommonVo {
+@NoArgsConstructor
+public class MemberVo {
 	private int memNo;
 	private String id;
 	private String pwd;
@@ -24,16 +22,4 @@ public class MemberVo extends CommonVo {
 	private int commentCount;
 	private int visitCount;
 	private int grade;
-
-	public MemberVo(int memNo, String state) {
-		super();
-		this.memNo = memNo;
-		this.state = state;
-	}
-	
-	public MemberVo(int memNo, int grade) {
-		super();
-		this.memNo = memNo;
-		this.grade = grade;
-	}
 }
